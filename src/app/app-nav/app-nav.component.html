@@ -1,0 +1,19 @@
+<md-nav-list>
+  <md-list-item [routerLink]="['/home']">
+    <md-icon md-list-icon>home</md-icon>
+    <a md-line>Home</a>
+  </md-list-item>
+  
+  <md-list-item *ngIf="user && user.isAuth()" [routerLink]="['/profile']">
+    <img md-list-avatar [src]="user.photoURL" [alt]="user.displayName" [title]="user.displayName">
+    <a md-line>{{ user.displayName }}</a>
+  </md-list-item>
+  <md-list-item *ngIf="user && user.isAuth()" md-button (click)="logout()">
+    <md-icon md-list-icon>person_outline</md-icon>
+    <a md-line>Logout</a>
+  </md-list-item>
+  <md-list-item *ngIf="user && !user.isAuth()" md-button (click)="login()">
+    <md-icon md-list-icon>person_outline</md-icon>
+    <a md-line>Login with Google</a>
+  </md-list-item>
+</md-nav-list>

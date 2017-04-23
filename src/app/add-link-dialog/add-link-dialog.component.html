@@ -1,0 +1,22 @@
+<h1 md-dialog-title>Save link</h1>
+<div md-dialog-content>
+ <div [formGroup]="form">
+
+  <md-input-container [style.width]="'100%'">
+    <input mdInput formControlName="title" placeholder="Title">
+  </md-input-container>
+   <md-input-container [style.width]="'100%'">
+        <input mdInput formControlName="url" type="url" placeholder="URL">
+  </md-input-container>
+  <md-input-container [style.width]="'100%'">
+    <textarea mdInput mdTextareaAutosize placeholder="Description" formControlName="description">
+
+    </textarea>
+  </md-input-container>
+
+ </div>
+</div>
+<div md-dialog-actions>
+  <button md-button (click)="createLink()">Create</button>
+  <button md-button (click)="cancelCreation()">Cancel</button>
+</div>

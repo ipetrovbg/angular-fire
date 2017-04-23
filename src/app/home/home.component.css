@@ -1,0 +1,19 @@
+/deep/ snack-bar-container.error{
+    background: red; 
+}
+/deep/ snack-bar-container.info{
+    background: blue; 
+}
+/deep/ snack-bar-container.warning{
+    background: orange; 
+}
+/deep/ snack-bar-container.success{
+    background: green; 
+}
+.flying-button{
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 999;
+    background: #009688;
+}
