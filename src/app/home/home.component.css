@@ -17,3 +17,16 @@
     z-index: 999;
     background: #009688;
 }
+.pointer{
+    cursor: pointer;
+}
+md-card{
+ transition:all 0.2s ease;
+}
+.active md-card{
+    background-color: #FAFAFA;
+   
+}
+.inactive md-card{
+    background-color: transparent;
+}

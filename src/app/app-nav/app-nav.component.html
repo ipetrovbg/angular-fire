@@ -3,10 +3,18 @@
     <md-icon md-list-icon>home</md-icon>
     <a md-line>Home</a>
   </md-list-item>
-  
   <md-list-item *ngIf="user && user.isAuth()" [routerLink]="['/profile']">
-    <img md-list-avatar [src]="user.photoURL" [alt]="user.displayName" [title]="user.displayName">
-    <a md-line>{{ user.displayName }}</a>
+    <!--<img md-list-avatar [src]="user.photoURL" [alt]="user.displayName" [title]="user.displayName">-->
+    <md-icon md-list-icon>account_circle</md-icon>
+    <a md-line>My profile</a>
+  </md-list-item>
+  <md-list-item *ngIf="user && user.isAuth()" [routerLink]="['/pocket']">
+    <md-icon md-list-icon>attach_money</md-icon>
+    <a md-line>My pocket</a>
+  </md-list-item>
+  <md-list-item *ngIf="user && user.isAuth()" [routerLink]="['/pcloud']">
+    <md-icon md-list-icon>storage</md-icon>
+    <a md-line>My pCloud</a>
   </md-list-item>
   <md-list-item *ngIf="user && user.isAuth()" md-button (click)="logout()">
     <md-icon md-list-icon>person_outline</md-icon>

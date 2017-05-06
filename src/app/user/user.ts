@@ -10,25 +10,24 @@ export class User implements IUser {
     public photoURL?: string;
     private _user: any;
 
-    constructor( user ){
-        if(user && user.auth && user.auth.uid && user.auth.displayName){
+    constructor( user ) {
+        if (user && user.auth && user.auth.uid && user.auth.displayName){
             this.user = user;
             this.uid = this.user.uid;
             this.displayName = this.user.auth.displayName;
-            if( this.user.auth.photoURL )
+            if ( this.user.auth.photoURL )
                 this.photoURL = this.user.auth.photoURL;
         }
-        
     }
 
-    isAuth(){
+    public isAuth() {
         return this.user ? true : false;
     }
 
     get user(): any {
         return this._user;
     }
-    set user(user:any) {
+    set user(user: any) {
         this._user = user;
     }
 }

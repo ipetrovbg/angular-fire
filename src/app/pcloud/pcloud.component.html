@@ -1,0 +1,9 @@
+<md-grid-list cols="4" rowHeight="3:1">
+  <div *ngFor="let folder of folders">
+    <md-grid-tile [colspan]="getColumns()" [rowspan]="getRolspan()">
+      <md-card width="100%">
+        <md-card-header>{{ folder.name }} </md-card-header>
+      </md-card>
+    </md-grid-tile>
+  </div>
+</md-grid-list>

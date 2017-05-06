@@ -1,3 +1,53 @@
-<p>
-  profile works!
-</p>
+<div class="wrapper" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="top center">
+  <div fxFlex.gt-sm="33" fxFlex.gt-md="25" fxFlex="100">
+    <md-grid-list cols="4" rowHeight="200px">
+      <md-grid-tile [colspan]="1" [rowspan]="2.01">
+        <md-card md-theme="dark-purple">
+          <md-card-header>
+            <md-card-title>{{ user.displayName }}</md-card-title>
+          </md-card-header>
+          <img md-card-image [src]="user.photoURL">
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="3" [rowspan]="1">
+        <md-card md-theme="dark-purple">
+          <md-card-header>
+            <md-card-title>My pCloud</md-card-title>
+            <md-card-subtitle>
+              <p *ngIf="pcloudAuthMsg?.length">
+                {{ pcloudAuthMsg }}
+                <a routerLink="/pcloud-login">Login</a>
+              </p>
+            </md-card-subtitle>
+          </md-card-header>
+          <md-card-content>
+            <div>
+              <p>Quota: {{ pcloudData?.quota / 1048576 | round | number }} <strong>Mb</strong></p>
+              <p>Used: {{ pcloudData?.usedquota / 1048576 | round | number }} <strong>Mb</strong></p>
+            </div>
+          </md-card-content>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="3" [rowspan]="1">
+        <md-card md-theme="dark-purple">
+          <md-card-header>
+            <md-card-title>My Pocket</md-card-title>
+          </md-card-header>
+          <md-card-content>
+            <div>
+              <p>Total: {{ total | round | number }} <strong>Lv.</strong></p>
+              <p>Daily: {{ daily }} <strong>Lv.</strong></p>
+            </div>
+          </md-card-content>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="3" [rowspan]="1">
+        <md-card md-theme="dark-purple">
+          <md-card-header>
+            <md-card-title>My links</md-card-title>
+          </md-card-header>
+        </md-card>
+      </md-grid-tile>
+    </md-grid-list>
+  </div>
+</div>

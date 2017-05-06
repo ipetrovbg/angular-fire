@@ -1,0 +1,13 @@
+<div class="wrapper" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="top center">
+  <div fxFlex.gt-sm="33" fxFlex.gt-md="25" fxFlex="100">
+    <md-card md-theme="dark-purple">
+      <h2 *ngIf="daily">
+        Daily {{ daily }}
+      </h2>
+      <h5 *ngIf="!daily">
+        <i>No records</i>
+      </h5>
+    </md-card>
+  </div>
+</div>
+

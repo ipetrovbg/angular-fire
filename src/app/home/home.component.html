@@ -11,30 +11,30 @@
 
 <!--Search form-->
   <div fxFlex.gt-sm="33" fxFlex.gt-md="25" fxFlex="100">
-    <md-card md-theme="dark-purple">
-      <div>
-        <h4>SEARCH</h4>
-      </div>
-      <md-card-content>
-        <form [formGroup]="form">
-          <!--hintLabel="e.g: @Angular"-->
+  <md-card md-theme="dark-purple">
+    <div>
+      <h4>SEARCH</h4>
+    </div>
+    <md-card-content>
+      <form [formGroup]="form">
+        <!--hintLabel="e.g: @Angular"-->
         <md-input-container [style.width]="'95%'" class="full-width-container">
-          <input 
-              mdInput
-              placeholder="Search for links"
-              formControlName="search"
-              (keyup)="logging = true"
-          >           
+          <input
+            mdInput
+            placeholder="Search for links"
+            formControlName="search"
+          >
         </md-input-container>
       </form>
       <h5 *ngIf="links?.length">Results {{ links?.length }}</h5>
-      </md-card-content>
-    </md-card>
-  </div>
+    </md-card-content>
+  </md-card>
+</div>
 <!--Search results-->
-  <div fxFlex.gt-sm="33" fxFlex.gt-md="25" *ngFor="let link of links">
-    <md-card>
-      <div>
+  <div fxFlex.gt-sm="33" fxFlex.gt-md="25" *ngFor="let link of links; let i = index;"
+      [@linkState]="link.state" [class]="link.state" (click)="toggleState(i)">
+    <md-card class="pointer">
+      <div >
         <h4>{{ link.title }}</h4>
       </div>
       <md-card-content>
@@ -44,7 +44,7 @@
         <a md-button [href]="link.url" target="_blanck" [title]="link.title"><md-icon>link</md-icon></a>
       </md-card-actions>
     </md-card>
-  </div>  
+  </div>
   <!--/Search results-->
 </div>
 

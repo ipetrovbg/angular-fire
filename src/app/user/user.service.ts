@@ -4,33 +4,40 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { User } from './user';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
   public user: BehaviorSubject<User>;
 
-  constructor(private af: AngularFire) {
-    if(!this.user){
+  constructor(private af: AngularFire, private router: Router) {
+    if (!this.user) {
       this.user = <BehaviorSubject<User>> new BehaviorSubject(new User({}));
     }
-    
+
     this.af.auth
-    .subscribe(user => {
-      if(user) this.user.next(new User(user));
-      else this.user.next(new User({}));;
+    .subscribe( user => {
+      if (user) {
+        this.user.next(new User(user));
+      } else {
+        this.user.next(new User({}));
+      };
     });
    }
 
-  login(){
+  login() {
     this.af.auth.login();
     this.af.auth
     .subscribe(user => {
-      if(user) this.user.next( new User( user ));
-      else this.user.next(new User({}));
+      if (user) {
+        this.user.next( new User( user ));
+      } else {
+        this.user.next(new User({}));
+      }
     });
   }
 
-  logout(){
+  logout() {
     this.af.auth.logout();
     this.user.next(new User({}));
   }
@@ -40,13 +47,11 @@ export class UserService {
   }
 
   isAuth (): Observable<boolean> {
-    let subject = new BehaviorSubject(false);
+    const subject = new BehaviorSubject(false);
     this.getUser().subscribe(user => {
       user.user ? subject.next(true) : subject.next(false);
     });
     return subject;
-    
-    
   }
 
 }

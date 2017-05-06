@@ -11,7 +11,7 @@ import { UserService } from '../user/user.service';
 export class AppNavComponent implements OnInit {
 public user: User;
   constructor(
-      private router:Router,
+      private router: Router,
       private _us: UserService
     ) {}
 
@@ -26,7 +26,6 @@ public user: User;
   logout() {
      this._us.logout();
      this.router.navigate(['/']);
-     
   }
 
 }

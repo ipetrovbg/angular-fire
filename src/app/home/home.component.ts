@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AddLinkDialogComponent } from '../add-link-dialog/add-link-dialog.component';
-
-import { 
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
+import {
   MdSnackBar,
   MdSnackBarRef,
   MdDialog,
@@ -14,24 +20,40 @@ import {
 import { FirebaseService } from '../core/firebase.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
+import { SnackService } from '../snack.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  animations: [
+    trigger('linkState', [
+      state('inactive', style({
+        // backgroundColor: '#eee',
+        transform: 'scale(1)'
+      })),
+      state('active',   style({
+        // backgroundColor: '#cfd8dc',
+        transform: 'scale(.9)'
+      })),
+      transition('inactive => active', animate('200ms ease-in')),
+      transition('active => inactive', animate('200ms ease-out'))
+    ])
+  ]
 })
 export class HomeComponent implements OnInit {
 
   public links = [];
   public user: User;
-  public logging: boolean = false;
+  public logging: boolean;
   public form: FormGroup;
   public errorMessage: string;
   public isLoggedIn$: Observable<boolean>;
+  public state: string = 'inactive';
 
   constructor(
     private _fb: FormBuilder,
-    private snackBar: MdSnackBar,
+    private snack: SnackService,
     private _afs: FirebaseService,
     private _us: UserService,
     private dialog: MdDialog
@@ -46,31 +68,42 @@ export class HomeComponent implements OnInit {
     // subscribing to change
     this._hendleSerachChange();
   }
-  
+
+  toggleState( index ) {
+    this.links.forEach((element, i) => {
+      if (i !== index) {
+        element.state = 'inactive';
+      }
+    });
+    this.links[index].state = this.links[index].state === 'inactive' ? 'active' : 'inactive';
+  }
+
   /**
-   * 
-   * @param event 
+   *
+   * @param event
    */
-  openModal(event){
-    if( this.user && this.user.isAuth() ){
-        let dialogRef = this.dialog.open(AddLinkDialogComponent, {
+  openModal(event) {
+    if ( this.user && this.user.isAuth() ) {
+        const dialogRef = this.dialog.open(AddLinkDialogComponent, {
           width: '750px',
         });
         dialogRef.afterClosed().subscribe(result => {
 
-          if(!result) return;
+          if (!result) {
+            return;
+          }
 
-          if(!result.state && result.data === false){
+          if (!result.state && result.data === false){
             this._handleMessage('Lnk was not created!',  ['warning'], null);
-          }else if(result.state) {
+          }else if (result.state) {
             this._handleMessage('Link was created successfully!',  ['success'], null);
           }
 
         });
-    }else{
+    } else {
       this._handleMessage('You need to sign in add new link!', ['error'], 'Login');
     }
-     
+
   }
 
 
@@ -80,7 +113,8 @@ export class HomeComponent implements OnInit {
       .valueChanges
       .debounceTime(700)
       .subscribe(search => {
-        if (this.form.valid && search.length >= 4 && this.user ){
+        this.logging = true;
+        if (this.form.valid && search.length >= 4 && this.user ) {
 
           // make a serach
           this._doSerach(search);
@@ -88,25 +122,28 @@ export class HomeComponent implements OnInit {
         }else {
           this.links = [];
           this.logging = false;
-          
+
         }
-        
+
       });
   }
   private _handleMessage(message: string, classes: Array<string>, action: any) {
-      this.snackBar.open(message, action, {
-        duration: 10000,
-        extraClasses: classes
-      })
-      .onAction()
+    console.log(classes);
+      this.snack.snack(message, classes, action)
       .subscribe(() => {
           this._us.login();
       });
   }
 
-  private _doSerach(search){
+  private _doSerach(search) {
     this._afs
       .searchLinks(search, `links/${this.user.uid}`)
+      .map(data => {
+        data.forEach(element => {
+          element.state = 'inactive';
+        });
+        return data;
+      })
       .subscribe(data => {
         this.links = data;
         this.logging = false;
@@ -114,9 +151,8 @@ export class HomeComponent implements OnInit {
       error => {
           this.links = [];
           this.logging = false;
-          this.errorMessage = "Error!";
+          this.errorMessage = 'Error!';
           this._handleMessage('You need to sign in to search!', ['error'], 'Login');
       });
   }
-  
 }
