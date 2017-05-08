@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class UtilService {
-
+  private state: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor() { }
 
   /**
@@ -28,6 +30,13 @@ export class UtilService {
     while (pattern.test(number))
       number = number.replace(pattern, '$1,$2');
     return number;
+  }
+
+  public setProgressState(state: boolean): void {
+    this.state.next(state);
+  }
+  public getProgressState$(): Observable<boolean> {
+   return this.state.asObservable();
   }
 
 }

@@ -5,6 +5,7 @@ import { User } from '../user/user';
 import { PcloudService } from '../core/pcloud.service';
 import { FirebaseService } from '../core/firebase.service';
 import { Router } from '@angular/router';
+import { UtilService } from '../core/util.service';
 
 @Component({
   selector: 'app-pclod-login',
@@ -20,14 +21,17 @@ export class PclodLoginComponent implements OnInit {
     private _pcloud: PcloudService,
     private _fbs: FirebaseService,
     private router: Router,
+    private util: UtilService,
   ) { }
 
   ngOnInit() {
+    this.util.setProgressState(true);
     this._us.getUser().subscribe(user => {
       this.user = user;
       if ( user.uid ) {
         this._fbs.getPcloudAuth(user.uid)
           .subscribe( pcloud => {
+            this.util.setProgressState(false);
             if ( pcloud && pcloud.length && ((new Date().getTime() - 576000) < pcloud[1].$value)) {
               this.router.navigate(['profile']);
             }
@@ -44,13 +48,17 @@ export class PclodLoginComponent implements OnInit {
    * Login
    */
   public doLogin() {
+    this.util.setProgressState(true);
     if ( this.user && this.user.uid && this.pcloudLoginForm.dirty && this.pcloudLoginForm.valid ) {
         this._pcloud.getUser(this.pcloudLoginForm.value)
           .subscribe( auth => {
               if ( auth && auth.auth ) {
                   this._fbs.updatePcloudAuth(auth.auth, this.user.uid);
               }
+            this.util.setProgressState(false);
           });
+    } else {
+      this.util.setProgressState(false);
     }
   }
 }

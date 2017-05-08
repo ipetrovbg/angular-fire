@@ -8,10 +8,9 @@
     <md-sidenav #sidemenu class="app-sidenav sidenav-panel" [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()">
     AFAE
     </md-sidenav>
-   
+
     <router-outlet></router-outlet>
 </md-sidenav-container>-->
-
 
 
 
@@ -22,6 +21,10 @@
   </button>
   <a class="branding">LinkStorage</a>
 </md-toolbar>
+<!--{{ counter$ | async }}-->
+<!--<button (click)="actions.increment()">+</button>-->
+<!--<button (click)="actions.decrement()">-</button>-->
+<app-progress></app-progress>
 <md-sidenav-container class="app-inner">
   <md-sidenav #sidemenu class="app-sidenav sidenav-panel" [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()">
     <app-app-nav></app-app-nav>

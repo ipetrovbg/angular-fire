@@ -1,0 +1,9 @@
+<div class="loader-conainer">
+  <md-progress-bar
+    *ngIf="loading$ | async"
+    [color]="'primary'"
+    [mode]="'indeterminate'"
+    [value]=""
+    [bufferValue]="">
+  </md-progress-bar>
+</div>

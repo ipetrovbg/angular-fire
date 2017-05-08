@@ -21,6 +21,7 @@ import { FirebaseService } from '../core/firebase.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import { SnackService } from '../snack.service';
+import { UtilService } from '../core/util.service';
 
 @Component({
   selector: 'app-home',
@@ -56,7 +57,8 @@ export class HomeComponent implements OnInit {
     private snack: SnackService,
     private _afs: FirebaseService,
     private _us: UserService,
-    private dialog: MdDialog
+    private dialog: MdDialog,
+    private util: UtilService
     ) {}
 
   ngOnInit() {
@@ -113,7 +115,7 @@ export class HomeComponent implements OnInit {
       .valueChanges
       .debounceTime(700)
       .subscribe(search => {
-        this.logging = true;
+        this.util.setProgressState(true);
         if (this.form.valid && search.length >= 4 && this.user ) {
 
           // make a serach
@@ -121,8 +123,7 @@ export class HomeComponent implements OnInit {
 
         }else {
           this.links = [];
-          this.logging = false;
-
+          this.util.setProgressState(false);
         }
 
       });
@@ -146,11 +147,11 @@ export class HomeComponent implements OnInit {
       })
       .subscribe(data => {
         this.links = data;
-        this.logging = false;
+          this.util.setProgressState(false);
       },
       error => {
           this.links = [];
-          this.logging = false;
+          this.util.setProgressState(false);
           this.errorMessage = 'Error!';
           this._handleMessage('You need to sign in to search!', ['error'], 'Login');
       });

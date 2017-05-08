@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgReduxModule } from '@angular-redux/store';
 
 import {
   MdGridListModule,
@@ -41,6 +42,8 @@ import { UtilService } from './core/util.service';
 import 'hammerjs';
 import { NumberPipe } from 'app/number.pipe';
 import { RoundPipe } from './round.pipe';
+import { ProgressComponent } from './components/progress/progress.component';
+import { CounterActions } from './actions';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyA2uiA90qnC-Lt0le4kHj79ogxmt9rr9N0',
@@ -76,11 +79,13 @@ const appRoutes: Routes = [
     PclodLoginComponent,
     PocketComponent,
     NumberPipe,
-    RoundPipe
+    RoundPipe,
+    ProgressComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    NgReduxModule,
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig),
     RouterModule.forRoot(appRoutes),
@@ -107,6 +112,7 @@ const appRoutes: Routes = [
    SnackService,
    UtilService,
    PocketService,
+   CounterActions,
   ],
   bootstrap: [ AppComponent ]
 })

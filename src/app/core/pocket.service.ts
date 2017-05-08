@@ -21,8 +21,10 @@ export class PocketService {
       const month = moment(new Date()).format('MM');
       const day = moment().format('D');
       const lastDaysToNewSalary = +moment().endOf('month').format('D') - (+day) + 4;
+
       const salary$ = this._afs.database(`pocket/${user.uid}/${year}/${month}/salary`);
       const monthlyCost$ = this._afs.database(`pocket/${user.uid}/${year}/${month}`);
+
       Observable.combineLatest([salary$, monthlyCost$])
         .map(([salary$, monthlyCost$]) => [{salary$: salary$, monthlyCost$: monthlyCost$}])
         .map(all => all[0])

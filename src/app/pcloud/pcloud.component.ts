@@ -7,6 +7,7 @@ import { UserService } from 'app/user/user.service';
 import { User } from 'app/user/user';
 import { PcloudService } from 'app/core/pcloud.service';
 import { SnackService } from 'app/snack.service';
+import { UtilService } from '../core/util.service';
 
 @Component({
   selector: 'app-pcloud',
@@ -24,10 +25,12 @@ export class PcloudComponent implements OnInit, OnDestroy {
     private _us: UserService,
     private _pcloud: PcloudService,
     private router: Router,
-    private snack: SnackService
+    private snack: SnackService,
+    private util: UtilService
   ) {}
 
   ngOnInit() {
+    this.util.setProgressState(true);
     this._us.getUser().subscribe(user => this.user = user);
     this.subscription.add(
       this._fb.getPcloudAuth(this.user.uid)
@@ -35,9 +38,13 @@ export class PcloudComponent implements OnInit, OnDestroy {
             if ( data && data.length && ((new Date().getTime() - 576000) < data[1].$value)) {
               this.subscription.add(
                 this._pcloud.listFolder(0, data[0].$value)
-                  .subscribe(folders => this.folders = folders)
+                  .subscribe(folders => {
+                    this.util.setProgressState(false);
+                    this.folders = folders;
+                  })
               );
             } else {
+              this.util.setProgressState(false);
               this.router.navigate(['pcloud-login']);
             }
           },
@@ -55,6 +62,7 @@ export class PcloudComponent implements OnInit, OnDestroy {
     }, true);
   }
   ngOnDestroy() {
+    this.util.setProgressState(false);
     this.subscription.unsubscribe();
   }
 
