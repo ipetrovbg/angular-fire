@@ -6,7 +6,7 @@ import { AngularFireModule } from 'angularfire2';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgReduxModule } from '@angular-redux/store';
-
+import { AngularFireDatabase } from 'angularfire2/database';
 import {
   MdGridListModule,
   MdButtonModule,
@@ -50,6 +50,8 @@ import { LinkContainerComponent } from './link-container/link-container.componen
 import { LinkComponent } from './components/link/link.component';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { DatepickerModule } from 'angular2-material-datepicker';
+import { LogMoneyComponent } from './components/log-money/log-money.component';
 
 export const firebaseConfig = {
   production: true,
@@ -94,7 +96,8 @@ const appRoutes: Routes = [
     ProgressComponent,
     TestComponent,
     LinkContainerComponent,
-    LinkComponent
+    LinkComponent,
+    LogMoneyComponent
   ],
   imports: [
     BrowserModule,
@@ -119,8 +122,9 @@ const appRoutes: Routes = [
     MdSidenavModule,
     MdToolbarModule,
     MdProgressSpinnerModule,
+    DatepickerModule,
   ],
-  entryComponents: [ AddLinkDialogComponent ],
+  entryComponents: [ AddLinkDialogComponent, LogMoneyComponent ],
  providers: [
    LoggedinGard,
    FirebaseService,
@@ -130,6 +134,7 @@ const appRoutes: Routes = [
    UtilService,
    PocketService,
    CounterActions,
+   AngularFireDatabase,
   ],
   bootstrap: [ AppComponent ]
 })

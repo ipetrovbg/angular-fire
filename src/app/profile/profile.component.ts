@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { LogMoneyComponent } from '../components/log-money/log-money.component';
 import { UserService } from '../user/user.service';
 
 import { User } from 'app/user/user';
@@ -11,6 +13,7 @@ import { UtilService } from '../core/util.service';
 import { Observable } from 'rxjs/Observable';
 import { select } from '@angular-redux/store';
 import { CounterActions } from '../actions';
+import { SnackService } from '../snack.service';
 
 @Component({
   selector: 'profile',
@@ -30,11 +33,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private _us: UserService,
     private pcloud: PcloudService,
+    private snack: SnackService,
     private router: Router,
     private fb: FirebaseService,
     private pocket: PocketService,
     private util: UtilService,
-    private actions: CounterActions
+    private actions: CounterActions,
+    private dialog: MdDialog,
   ) {}
 
   ngOnInit() {
@@ -86,5 +91,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   public loadAllLinks = () => {
     this.router.navigate(['/links']);
+  }
+  public logMoney() {
+    const dialogRef: MdDialogRef<any> = this.dialog.open(LogMoneyComponent, {
+      width: '750px',
+      height: '600px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if ( result ) {
+        this.snack.snack('Money was added!',  ['success'], null);
+      }
+    });
   }
 }

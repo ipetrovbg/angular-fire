@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
+import * as firebase from 'firebase';
 import { Observable } from 'rxjs/Rx';
 
 import * as _ from 'lodash';
@@ -69,6 +70,16 @@ export class FirebaseService {
         cb();
       }
     }
+  }
+
+  /**
+   *
+   * put spent money
+   */
+  public putSpentMoney = ( money: number, path: string ) => {
+    return firebase.database().ref(path).set(money);
+    // const firePocketMoney = this._af.list(path);
+    // firePocketMoney.push(money);
   }
 
   /**

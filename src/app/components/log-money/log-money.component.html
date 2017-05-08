@@ -1,0 +1,16 @@
+<h1 md-dialog-title>Add spent money</h1>
+<div md-dialog-content>
+  <div [formGroup]="form">
+
+    <md-input-container [style.width]="'100%'">
+      <input type="number" mdInput formControlName="money" placeholder="Money">
+    </md-input-container>
+   <div [style.height]="'400px'">
+     <material-datepicker [(date)]="today" (onSelect)="onSelect($event)"></material-datepicker>
+   </div>
+  </div>
+</div>
+<div md-dialog-actions>
+  <button md-button (click)="save()">Save</button>
+  <button md-button (click)="cancel()">Cancel</button>
+</div>

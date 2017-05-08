@@ -37,6 +37,7 @@
             <div>
               <p>Total: {{ total | round | number }} <strong>Lv.</strong></p>
               <p>Daily: {{ daily }} <strong>Lv.</strong></p>
+              <button md-raised-button [color]="'primary'" (click)="logMoney()"><md-icon>attach_money</md-icon> Log money</button>
             </div>
           </md-card-content>
         </md-card>
