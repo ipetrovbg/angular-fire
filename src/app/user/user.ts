@@ -11,12 +11,12 @@ export class User implements IUser {
     private _user: any;
 
     constructor( user ) {
-        if (user && user.auth && user.auth.uid && user.auth.displayName){
+        if (user && user.uid && user.displayName) {
             this.user = user;
             this.uid = this.user.uid;
-            this.displayName = this.user.auth.displayName;
-            if ( this.user.auth.photoURL )
-                this.photoURL = this.user.auth.photoURL;
+            this.displayName = this.user.displayName;
+            if ( this.user.photoURL )
+                this.photoURL = this.user.photoURL;
         }
     }
 

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgReduxModule } from '@angular-redux/store';
@@ -48,20 +48,25 @@ import { CounterActions } from './actions';
 import { TestComponent } from './test/test.component';
 import { LinkContainerComponent } from './link-container/link-container.component';
 import { LinkComponent } from './components/link/link.component';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyA2uiA90qnC-Lt0le4kHj79ogxmt9rr9N0',
-  authDomain: 'test-firebase-26a80.firebaseapp.com',
-  databaseURL: 'https://test-firebase-26a80.firebaseio.com',
-  projectId: 'test-firebase-26a80',
-  storageBucket: 'test-firebase-26a80.appspot.com',
-  messagingSenderId: '398288908275'
+  production: true,
+  firebase: {
+    apiKey: 'AIzaSyA2uiA90qnC-Lt0le4kHj79ogxmt9rr9N0',
+    authDomain: 'test-firebase-26a80.firebaseapp.com',
+    databaseURL: 'https://test-firebase-26a80.firebaseio.com',
+    projectId: 'test-firebase-26a80',
+    storageBucket: 'test-firebase-26a80.appspot.com',
+    messagingSenderId: '398288908275'
+  }
 };
 
-const myFirebaseAuthConfig = {
-  provider: AuthProviders.Google,
-  method: AuthMethods.Redirect
-};
+// const myFirebaseAuthConfig = {
+//   provider: AuthProviders.Google,
+//   method: AuthMethods.Redirect
+// };
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -96,7 +101,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     NgReduxModule,
     HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig),
+    AngularFireModule.initializeApp(firebaseConfig.firebase),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
     MdGridListModule,

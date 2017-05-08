@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Rx';
 
 import * as _ from 'lodash';
 
 @Injectable()
 export class FirebaseService {
-  constructor(private _af: AngularFire) {}
+  constructor(private _af: AngularFireDatabase) {}
 
   /**
    * basic db method
    * @param path
-   * @returns {FirebaseListObservable<any[]>}
+   * @returns {Observable<any>}
    */
-  public database(path: string): FirebaseListObservable<any> {
-    return this._af.database.list(path);
+  public database(path: string): Observable<any> {
+    return this._af.list(path);
   }
 
   /**
@@ -24,8 +23,8 @@ export class FirebaseService {
    * @param path
    * @returns {Observable<R>}
    */
-  public searchLinks( q: string, path: string ) {
-    return this._af.database
+  public searchLinks( q: string, path: string ): Observable<any> {
+    return this._af
             .list(path, {
               query: {
                 orderByChild: 'title'
@@ -63,7 +62,7 @@ export class FirebaseService {
    * @param cb (callback after put new link)
    */
   public putLink(singleLink, path: string, cb) {
-    const fireLinksList = this._af.database.list(path);
+    const fireLinksList = this._af.list(path);
     if (fireLinksList) {
       fireLinksList.push(singleLink);
       if ( typeof cb === 'function' ) {
@@ -76,20 +75,20 @@ export class FirebaseService {
    * get auth for pCloud by uid
    * auth.auth
    * @param uid
-   * @returns {FirebaseListObservable<any[]>}
+   * @returns {Observable<any>}
    */
-  public getPcloudAuth(uid: string): FirebaseListObservable<any> {
-    return this._af.database.list(`pcloud/${ uid }`);
+  public getPcloudAuth(uid: string): Observable<any> {
+    return this._af.list(`pcloud/${ uid }`);
   }
 
   /**
    * update pCloud auth by uid
    * @param auth
    * @param uid
-   * @returns {FirebaseListObservable<any[]>}
+   * @returns {Observable<any>}
    */
-  public updatePcloudAuth(auth: string, uid: string): FirebaseListObservable<any> {
-    const fbPclodRef = this._af.database;
+  public updatePcloudAuth(auth: string, uid: string): Observable<any> {
+    const fbPclodRef = this._af;
     fbPclodRef.list(`pcloud`, { preserveSnapshot: true }).update(uid, { auth: auth, refresh: new Date().getTime() });
     return fbPclodRef.list(`pcloud/${ uid }`);
   }

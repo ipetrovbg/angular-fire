@@ -1,16 +1,15 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { CanActivate } from '@angular/router';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import 'rxjs';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class LoggedinGard implements CanActivate {
 
-    constructor(private af: AngularFire) {}
+    constructor(private af: AngularFireAuth) {}
 
     canActivate(): Observable<boolean> | boolean {
-        return this.af.auth.map(user => {
+        return this.af.authState.map(user => {
             return user ? true : false;
         }).take(1);
     }

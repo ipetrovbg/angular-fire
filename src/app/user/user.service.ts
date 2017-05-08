@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
-
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
-
-import { Router } from '@angular/router';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 import { User } from './user';
 import { CounterActions } from '../actions';
@@ -12,12 +10,12 @@ import { CounterActions } from '../actions';
 export class UserService {
   public user: BehaviorSubject<User>;
 
-  constructor(private af: AngularFire, private actions: CounterActions) {
+  constructor(private actions: CounterActions, private afAuth: AngularFireAuth) {
     if (!this.user) {
       this.user = <BehaviorSubject<User>> new BehaviorSubject(new User({}));
     }
 
-    this.af.auth
+    this.afAuth.authState
     .subscribe( user => {
       if (user) {
         this.actions.updateUser(new User(user));
@@ -30,9 +28,10 @@ export class UserService {
    }
 
   login() {
-    this.af.auth.login();
-    this.af.auth
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    this.afAuth.authState
     .subscribe(user => {
+      console.log(user);
       if (user) {
         this.actions.updateUser(new User(user));
         this.user.next( new User( user ));
@@ -44,7 +43,7 @@ export class UserService {
   }
 
   logout() {
-    this.af.auth.logout();
+    this.afAuth.auth.signOut();
     this.actions.updateUser(new User({}));
     this.user.next(new User({}));
   }
