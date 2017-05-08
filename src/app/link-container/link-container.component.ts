@@ -13,6 +13,7 @@ import { CounterActions } from 'app/actions';
 export class LinkContainerComponent implements OnInit {
   @select() public readonly links$: Observable<Array<any>>;
   @select() public readonly loadingLinks$: Observable<boolean>;
+  @select() public readonly requestForLinksMaded$: Observable<boolean>;
   constructor(
     private _us: UserService,
     private fb: FirebaseService,
@@ -22,18 +23,20 @@ export class LinkContainerComponent implements OnInit {
   ngOnInit() {
     this._us.getUser().subscribe(user => {
       if ( user && user.uid ) {
-        this.links$.subscribe(links => {
-          if (!links.length) {
-            this.actions.loadingLinks(true);
-            this.fb.database(`links/${user.uid}`).subscribe(snap => {
-              this.actions.setLink(snap);
+
+        this.requestForLinksMaded$
+          .subscribe(isMaded => {
+            if ( !isMaded ) {
+              this.actions.loadingLinks(true);
+              this.fb.database(`links/${user.uid}`).subscribe(snap => {
                 this.actions.loadingLinks(false);
-              },
-            () => {
-              this.actions.loadingLinks(false);
-            });
-          }
-        });
+                this.actions.setLink(snap);
+              });
+            }
+          },
+          () => {
+            this.actions.loadingLinks(false);
+          });
       }
     });
   }

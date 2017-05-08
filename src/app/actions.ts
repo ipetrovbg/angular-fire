@@ -5,8 +5,6 @@ import { User } from './user/user';
 
 @Injectable()
 export class CounterActions {
-  static INCREMENT = 'INCREMENT';
-  static DECREMENT = 'DECREMENT';
   static UPDATE_USER = 'UPDATE_USER';
   static SET_LINKS = 'SET_LINKS';
   static LINK_RESULTS = 'LINK_RESULTS';

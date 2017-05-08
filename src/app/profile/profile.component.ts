@@ -19,13 +19,12 @@ import { CounterActions } from '../actions';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   @select() public readonly links$: Observable<Array<any>>;
+  @select() public readonly requestForLinksMaded$: Observable<Array<any>>;
   daily: number;
   total: number;
   public pcloudAuthMsg: string;
   public pcloudData: {quota: number, usedquota: number} = {quota: 0, usedquota: 0};
-  public countLinks: Observable<number>;
   public user: User;
-  private _links$ = [];
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -66,11 +65,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
         if ( data.quota && data.usedquota ) {
           this.pcloudData = data;
         }
-        this.links$.subscribe(links => {
-          if (!links.length) {
-            this.fb.database(`links/${this.user.uid}`).subscribe(snap => this.actions.setLink(snap));
-          }
-        });
+
+        this.requestForLinksMaded$
+          .subscribe(isMaded => {
+            if ( !isMaded ) {
+              this.fb.database(`links/${this.user.uid}`).subscribe(snap => this.actions.setLink(snap));
+            }
+          });
 
         this.util.setProgressState(false);
     }));

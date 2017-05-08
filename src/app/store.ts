@@ -13,6 +13,7 @@ export interface AppState {
     uid: string
   };
   searchLinkResults: Array<any>;
+  requestForLinksMaded: boolean;
   links: Array<any>;
   requestForLinks: boolean;
   loadingLinks: boolean;
@@ -27,14 +28,13 @@ export const INITIAL_STATE: AppState = {
   },
   searchLinkResults: [],
   links: [],
+  requestForLinksMaded: false,
   requestForLinks: false,
   loadingLinks: false,
 };
 
 export function rootReducer(state: AppState, action: ExtendedAction): AppState {
   switch (action.type) {
-    case CounterActions.INCREMENT: return Object.assign(state, {}, state.counter + 1);
-    case CounterActions.DECREMENT: return Object.assign(state, {}, state.counter - 1);
     case CounterActions.LOADING_LINKS: {
       state.loadingLinks = action.payload;
       return Object.assign({}, state);
@@ -53,6 +53,7 @@ export function rootReducer(state: AppState, action: ExtendedAction): AppState {
     }
     case CounterActions.SET_LINKS: {
       state.links = action.payload.links;
+      state.requestForLinksMaded = true;
       return Object.assign({}, state);
     }
     default: return state;
