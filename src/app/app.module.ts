@@ -22,6 +22,7 @@ import {
   MaterialModule,
   MdSidenavModule,
   MdToolbarModule,
+  MdProgressSpinnerModule,
  } from '@angular/material';
 
 import { LoggedinGard } from './login';
@@ -44,6 +45,9 @@ import { NumberPipe } from 'app/number.pipe';
 import { RoundPipe } from './round.pipe';
 import { ProgressComponent } from './components/progress/progress.component';
 import { CounterActions } from './actions';
+import { TestComponent } from './test/test.component';
+import { LinkContainerComponent } from './link-container/link-container.component';
+import { LinkComponent } from './components/link/link.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyA2uiA90qnC-Lt0le4kHj79ogxmt9rr9N0',
@@ -65,7 +69,9 @@ const appRoutes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [ LoggedinGard ] },
   { path: 'pcloud', component: PcloudComponent, canActivate: [ LoggedinGard ] },
   { path: 'pcloud-login', component: PclodLoginComponent, canActivate: [ LoggedinGard ] },
-  { path: 'pocket', component: PocketComponent, canActivate: [ LoggedinGard ] }
+  { path: 'pocket', component: PocketComponent, canActivate: [ LoggedinGard ] },
+  { path: 'links', component: LinkContainerComponent, canActivate: [ LoggedinGard ] },
+  { path: 'test', component: TestComponent },
 ];
 
 @NgModule({
@@ -80,7 +86,10 @@ const appRoutes: Routes = [
     PocketComponent,
     NumberPipe,
     RoundPipe,
-    ProgressComponent
+    ProgressComponent,
+    TestComponent,
+    LinkContainerComponent,
+    LinkComponent
   ],
   imports: [
     BrowserModule,
@@ -102,6 +111,7 @@ const appRoutes: Routes = [
     MdDialogModule,
     MdSidenavModule,
     MdToolbarModule,
+    MdProgressSpinnerModule,
   ],
   entryComponents: [ AddLinkDialogComponent ],
  providers: [

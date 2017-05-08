@@ -10,6 +10,7 @@ import { PocketService } from 'app/core/pocket.service';
 import { UtilService } from '../core/util.service';
 import { Observable } from 'rxjs/Observable';
 import { select } from '@angular-redux/store';
+import { CounterActions } from '../actions';
 
 @Component({
   selector: 'profile',
@@ -17,13 +18,14 @@ import { select } from '@angular-redux/store';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  @select() public readonly counter$: Observable<number>;
+  @select() public readonly links$: Observable<Array<any>>;
   daily: number;
   total: number;
   public pcloudAuthMsg: string;
   public pcloudData: {quota: number, usedquota: number} = {quota: 0, usedquota: 0};
   public countLinks: Observable<number>;
   public user: User;
+  private _links$ = [];
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -33,6 +35,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private fb: FirebaseService,
     private pocket: PocketService,
     private util: UtilService,
+    private actions: CounterActions
   ) {}
 
   ngOnInit() {
@@ -63,7 +66,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         if ( data.quota && data.usedquota ) {
           this.pcloudData = data;
         }
-        this.countLinks = this.fb.database(`links/${this.user.uid}`).map(snap => snap.length);
+        this.links$.subscribe(links => {
+          if (!links.length) {
+            this.fb.database(`links/${this.user.uid}`).subscribe(snap => this.actions.setLink(snap));
+          }
+        });
+
         this.util.setProgressState(false);
     }));
     this.subscription.add(this.pocket.getSalaryAndDailyMoney().subscribe(data => {
@@ -73,5 +81,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  public loadAllLinks = () => {
+    this.router.navigate(['/links']);
   }
 }

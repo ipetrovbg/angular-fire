@@ -1,0 +1,14 @@
+<div fxFlex.gt-sm="33" fxFlex.gt-md="25" *ngFor="let link of links; let i = index;"
+     [@linkState]="link.state" [class]="link.state" (click)="toggleState(i)">
+  <md-card class="pointer">
+    <div >
+      <h4>{{ link.title }}</h4>
+    </div>
+    <md-card-content>
+      <i>{{ link.description }}</i>
+    </md-card-content>
+    <md-card-actions>
+      <a md-button [href]="link.url" target="_blanck" [title]="link.title"><md-icon>link</md-icon></a>
+    </md-card-actions>
+  </md-card>
+</div>

@@ -3,14 +3,16 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
-import { User } from './user';
 import { Router } from '@angular/router';
+
+import { User } from './user';
+import { CounterActions } from '../actions';
 
 @Injectable()
 export class UserService {
   public user: BehaviorSubject<User>;
 
-  constructor(private af: AngularFire, private router: Router) {
+  constructor(private af: AngularFire, private actions: CounterActions) {
     if (!this.user) {
       this.user = <BehaviorSubject<User>> new BehaviorSubject(new User({}));
     }
@@ -18,8 +20,10 @@ export class UserService {
     this.af.auth
     .subscribe( user => {
       if (user) {
+        this.actions.updateUser(new User(user));
         this.user.next(new User(user));
       } else {
+        this.actions.updateUser(new User({}));
         this.user.next(new User({}));
       };
     });
@@ -30,8 +34,10 @@ export class UserService {
     this.af.auth
     .subscribe(user => {
       if (user) {
+        this.actions.updateUser(new User(user));
         this.user.next( new User( user ));
       } else {
+        this.actions.updateUser(new User(user));
         this.user.next(new User({}));
       }
     });
@@ -39,6 +45,7 @@ export class UserService {
 
   logout() {
     this.af.auth.logout();
+    this.actions.updateUser(new User({}));
     this.user.next(new User({}));
   }
 

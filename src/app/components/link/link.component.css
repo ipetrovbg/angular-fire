@@ -1,0 +1,13 @@
+.pointer{
+  cursor: pointer;
+}
+md-card{
+  transition:all 0.2s ease;
+}
+.active md-card{
+  background-color: #FAFAFA;
+
+}
+.inactive md-card{
+  background-color: transparent;
+}

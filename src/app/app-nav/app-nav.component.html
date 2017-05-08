@@ -16,6 +16,10 @@
     <md-icon md-list-icon>storage</md-icon>
     <a md-line>My pCloud</a>
   </md-list-item>
+  <md-list-item *ngIf="user && user.isAuth()" [routerLink]="['/links']">
+    <md-icon md-list-icon>link</md-icon>
+    <a md-line>My links</a>
+  </md-list-item>
   <md-list-item *ngIf="user && user.isAuth()" md-button (click)="logout()">
     <md-icon md-list-icon>person_outline</md-icon>
     <a md-line>Logout</a>
