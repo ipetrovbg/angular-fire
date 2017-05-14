@@ -78,8 +78,6 @@ export class FirebaseService {
    */
   public putSpentMoney = ( money: number, path: string ) => {
     return firebase.database().ref(path).set(money);
-    // const firePocketMoney = this._af.list(path);
-    // firePocketMoney.push(money);
   }
 
   /**
@@ -90,6 +88,10 @@ export class FirebaseService {
    */
   public getPcloudAuth(uid: string): Observable<any> {
     return this._af.list(`pcloud/${ uid }`);
+  }
+
+  nativeFirebaseDb(path) {
+    return firebase.database().ref(path);
   }
 
   /**

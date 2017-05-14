@@ -1,13 +1,51 @@
 <div class="wrapper" fxLayout="row" fxLayoutWrap="wrap" fxLayoutAlign="top center">
   <div fxFlex.gt-sm="33" fxFlex.gt-md="25" fxFlex="100">
-    <md-card md-theme="dark-purple">
-      <h2 *ngIf="daily">
-        Daily {{ daily }}
-      </h2>
-      <h5 *ngIf="!daily">
-        <i>No records</i>
-      </h5>
-    </md-card>
+    <div class="log-header">
+      <md-card>
+        <h2>Logs</h2>
+      </md-card>
+      <md-card>
+        <material-datepicker [(date)]="date" (onSelect)="onSelect($event)"></material-datepicker>
+      </md-card>
+      <div class="clearfix"></div>
+    </div>
+    <md-grid-list cols="2" rowHeight="120px" class="font">
+      <md-grid-tile>
+        <h3>Daily log:</h3>
+      </md-grid-tile>
+      <md-grid-tile>
+        <p><small *ngIf="logs?.day">{{ logs?.day }} Lv.</small><small *ngIf="!logs?.day">[ - ]</small></p>
+      </md-grid-tile>
+    </md-grid-list>
+    <hr>
+    <md-grid-list cols="2" rowHeight="120px">
+      <md-grid-tile>
+        <md-card>
+          <h3>Monthly logs</h3>
+        </md-card>
+      </md-grid-tile>
+      <md-grid-tile>
+        <md-card><h4 class="center">{{ logs?.humanizeMonth }}</h4></md-card>
+      </md-grid-tile>
+    </md-grid-list>
+    <div *ngIf="logs?.month">
+      <md-grid-list cols="2" rowHeight="120px">
+        <md-grid-tile>
+          <md-card><h5>Day</h5></md-card>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-card><h5>Money</h5></md-card>
+        </md-grid-tile>
+      </md-grid-list>
+      <md-grid-list cols="2" rowHeight="70px" *ngFor="let key of logs?.month">
+        <md-grid-tile>
+          <md-card>{{ key.key }}</md-card>
+        </md-grid-tile>
+        <md-grid-tile>
+          <md-card>{{ key.month }} Lv.</md-card>
+        </md-grid-tile>
+      </md-grid-list>
+    </div>
   </div>
 </div>
 

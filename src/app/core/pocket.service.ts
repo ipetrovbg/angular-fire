@@ -45,4 +45,29 @@ export class PocketService {
     return data$;
   }
 
+  getDailyLogs(date): Observable<{year: Array<Object>, month: Array<Object>, day: number, humanizeMonth: string}> {
+    const data$ = new BehaviorSubject({year: [], month: [], day: 0, humanizeMonth: ''});
+    this._us.getUser().subscribe(user => {
+      const refExist = this._afs.nativeFirebaseDb(`pocket/${ user.uid }`);
+      const dayRef = this._afs.nativeFirebaseDb(`pocket/${ user.uid }/${ moment(date).format('YYYY') }/${ moment(date).format('MM') }/${ moment(date).format('DD') }`);
+      const monthRef = this._afs.nativeFirebaseDb(`pocket/${ user.uid }/${ moment(date).format('YYYY') }/${ moment(date).format('MM') }`);
+      const yearRef = this._afs.nativeFirebaseDb(`pocket/${ user.uid }/${ moment(date).format('YYYY') }`);
+      refExist.once('value', data => {
+        if ( data.exists() ) {
+          yearRef.once('value', (yearData) => {
+            const year = yearData.val();
+            monthRef.once('value', monthData => {
+              const month = monthData.val();
+                dayRef.once('value', (dayData) => {
+                  const day = dayData.val();
+                  data$.next({year, month, humanizeMonth: moment(date).format('MMMM'), day});
+                });
+            });
+          });
+        }
+      });
+    });
+    return data$;
+  }
+
 }

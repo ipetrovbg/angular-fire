@@ -1,0 +1,19 @@
+md-card {
+  width:100%;
+}
+.log-header{
+  width:100%;
+}
+.log-header md-card {
+  width:44.6%;
+  float: left;
+}
+.font{
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+.clearfix{
+  clear: both;
+}
+.center{
+  text-align: center;
+}

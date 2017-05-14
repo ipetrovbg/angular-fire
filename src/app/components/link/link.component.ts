@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import {
   trigger,
   state,
@@ -11,6 +11,7 @@ import {
   selector: 'app-link',
   templateUrl: './link.component.html',
   styleUrls: ['./link.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('linkState', [
       state('inactive', style({
